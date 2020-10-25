@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.mapper.UserMapper">
+    <resultMap id="userMap" type="org.example.model.SysUser">
+        <id property="id" column="id"/>
+        <result property="userName" column="user_name"/>
+        <result property="userPassword" column="user_password"/>
+        <result property="userEmail" column="user_email"/>
+        <result property="userInfo" column="user_info"/>
+        <result property="headImg" column="head_img" jdbcType="BLOB"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="userMap">
+        SELECT * FROM sys_user WHERE id = #{id}
+    </select>
+
+    <select id="selectAll" resultType="org.example.model.SysUser">
+        SELECT id, user_name, user_password, user_email, user_info, head_img, create_time
+        FROM sys_user
+    </select>
+
+    <select id="selectRolesByUserId" resultType="org.example.model.SysUser">
+        SELECT r.id, r.role_name, r.enabled, r.create_by, r.create_time, u.user_name, u.user_email
+        FROM sys_user AS u
+        INNER JOIN sys_user_role AS ur ON u.id = ur.user_id
+        INNER JOIN sys_role AS r ON r.id = ur.role_id
+        WHERE u.id = #{userId}
+    </select>
+
+    <!-- 对于一些特殊的数据类型，建议指定具体的 jdbcType 值 -->
+    <!-- 数据库的 datetime 类型可以存储 Date（时间部分默认为 00:00:00）和 TIMESTAMP 两种类型，不能存储 TIME 类型-->
+    <insert id="insert">
+        INSERT INTO sys_user(id, user_name, user_password, user_email, user_info, head_img, create_time)
+        VALUES (#{id}, #{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg, jdbcType=BLOB}, #{createTime, jdbcType=TIMESTAMP})
+    </insert>
+
+    <!-- useGeneratedKeys 设置为 true 后，MyBatis 会使用 JDBC 的 getGeneratedKeys 方法取出由数据库内部生成的主键。
+         获得主键后将其赋值给 keyProperty 配置的 id 属性。当需要设置多个属性时，使用逗号隔开，这种情况下通常还需要设置 
+         keyColumn 属性，按顺序指定数据库的列。这种方式只适用于支持主键自增的数据库。 -->
+    <insert id="insert2" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO sys_user(user_name, user_password, user_email, user_info, head_img, create_time)
+        VALUES (#{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg, jdbcType=BLOB}, #{createTime, jdbcType=TIMESTAMP})
+    </insert>
+
+    <!-- 这种方式不只适用于支持主键自增的数据库，也适用于不支持主键自增的数据库。 -->
+    <insert id="insert3">
+        INSERT INTO sys_user(user_name, user_password, user_email, user_info, head_img, create_time)
+        VALUES (#{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg, jdbcType=BLOB},
+        #{createTime, jdbcType=TIMESTAMP})
+        <selectKey keyColumn="id" resultType="long" keyProperty="id" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+    </insert>
+
+    <update id="updateById">
+        UPDATE sys_user
+        SET user_name = #{userName}, user_password = #{userPassword}, user_email = #{userEmail}, user_info = #{userInfo}, head_img = #{headImg}, create_time = #{createTime}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM sys_user WHERE id = #{id}
+    </delete>
+
+    <select id="selectRolesByUserIdAndRoleEnabled" resultType="org.example.model.SysRole">
+        SELECT r.id, r.role_name, r.enabled, r.create_by, r.create_time
+        FROM sys_user AS u
+        INNER JOIN sys_user_role AS ur ON u.id = ur.user_id
+        INNER JOIN sys_role AS r ON r.id = ur.role_id
+        WHERE u.id = #{userId} AND r.enabled = #{enabled}
+    </select>
+
+</mapper>
