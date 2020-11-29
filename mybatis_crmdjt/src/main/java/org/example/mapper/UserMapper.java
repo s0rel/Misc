@@ -5,6 +5,7 @@ import org.example.model.Role;
 import org.example.model.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserMapper {
     User selectById(Long id);
@@ -34,4 +35,18 @@ public interface UserMapper {
     // 传递多个参数
     // 给参数配置 @Param 注解后，MyBatis 会自动将参数封装成 Map 类型，@Param 注解值会作为 Map 中的 key
     List<Role> selectRolesByUserIdAndRoleEnabled(@Param("userId") Long userId, @Param("enabled") Integer enabled);
+
+    // 根据动态条件查询用户信息
+    List<User> selectByUser(User user);
+
+    // 根据主键更新
+    int updateByIdSelective(User user);
+
+    User selectByIdOrUserName(User user);
+
+    List<User> selectByIdList(List<Long> idList);
+
+    int insertList(List<User> userList);
+
+    int updateByMap(Map<String, Object> map);
 }

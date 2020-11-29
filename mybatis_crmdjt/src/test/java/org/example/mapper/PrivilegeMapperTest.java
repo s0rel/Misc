@@ -10,9 +10,9 @@ public class PrivilegeMapperTest extends BaseMapperTest {
     public void testSelectById() {
         try (SqlSession sqlSession = getSqlSession()) {
             PrivilegeMapper privilegeMapper = sqlSession.getMapper(PrivilegeMapper.class);
-            Privilege privilege = privilegeMapper.selectById(1L);
-            Assertions.assertNotNull(privilege);
-            Assertions.assertEquals("用户管理", privilege.getPrivilegeName());
+            Privilege result = privilegeMapper.selectById(1L);
+            Assertions.assertNotNull(result);
+            Assertions.assertEquals("用户管理", result.getPrivilegeName());
         }
     }
 }

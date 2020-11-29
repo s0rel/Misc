@@ -6,7 +6,7 @@ CREATE TABLE user (
     id BIGINT(20) NOT NULL AUTO_INCREMENT COMMENT '用户id',
     user_name VARCHAR(50) COMMENT '用户名',
     user_password VARCHAR(50) COMMENT '密码',
-    user_email VARCHAR(50) COMMENT '邮箱',
+    user_email VARCHAR(50) DEFAULT 'test@mybatis.org' COMMENT '邮箱',
     user_info TEXT COMMENT '简介',
     head_img BLOB COMMENT '头像',
     create_time DATETIME COMMENT '创建时间',

@@ -24,7 +24,9 @@
     </resultMap>
 
     <select id="selectById" resultMap="userMap">
-        SELECT * FROM user WHERE id = #{id}
+        SELECT *
+        FROM user
+        WHERE id = #{id}
     </select>
 
     <select id="selectAll" resultType="org.example.model.User">
@@ -54,9 +56,20 @@
         赋值给 keyProperty 配置的 id 属性。当需要设置多个属性时，使用逗号隔开，这种情况下通常还需要设置 keyColumn 属性，按顺序指定
         数据库的列。这种方式只适用于支持主键自增的数据库。 由于要使用数据库返回的主键值，所以 SQL 中去掉了 id 列和对应的 #{id} 属性。
     -->
+    <!--
+        在 INSERT 中使用时要注意，若在列的部分增加 if 条件，则 VALUES 的部分也要加相同的 if 条件，必须保证上下可以互相对应，完全匹配。
+    -->
     <insert id="insertByUseGeneratedKeys" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user(user_name, user_password, user_email, user_info, head_img, create_time)
-        VALUES (#{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg, jdbcType = BLOB}, #{createTime, jdbcType = TIMESTAMP})
+        INSERT INTO user(user_name, user_password,
+        <if test="userEmail != null and userEmail != ''">
+            user_email,
+        </if>
+        user_info, head_img, create_time)
+        VALUES (#{userName}, #{userPassword},
+        <if test="userEmail != null and userEmail != ''">
+            #{userEmail},
+        </if>
+        #{userInfo}, #{headImg, jdbcType = BLOB}, #{createTime, jdbcType = TIMESTAMP})
     </insert>
 
     <!--
@@ -80,7 +93,8 @@
     </update>
 
     <delete id="deleteById">
-        DELETE FROM user WHERE id = #{id}
+        DELETE FROM user
+        WHERE id = #{id}
     </delete>
 
     <select id="selectRolesByUserIdAndRoleEnabled" resultType="org.example.model.Role">
@@ -90,4 +104,112 @@
         INNER JOIN role AS r ON r.id = ur.role_id
         WHERE u.id = #{userId} AND r.enabled = #{enabled}
     </select>
+
+    <!--
+        对于 if 标签而言，test 属性是必填的，test 的属性值是一个符合 OGNL 要求的表达式，表达式的结果可以是 true 或 false，除此之外
+        所有的非 0 值都为 true，只有 0 为 false。
+    -->
+    <!--
+        where 标签的作用：如果该标签包含的元素中有返回值，就插入一个 WHERE；如果 WHERE 后面的字符串是以 AND 或 OR 开头的，就将他们剔除。
+    -->
+    <!--
+        bind 标签可以使用 OGNL 表达式创建一个变量并将其绑定到上下文中。
+        bind 标签的两个属性都是必选项，name 为绑定到上下文的变量名，value 为 OGNL 表达式。使用 bind 拼接字符串不仅可以避免因更换数据库
+        而修改 SQL，也能预防 SQL 注入。
+    -->
+    <select id="selectByUser" resultType="org.example.model.User">
+        SELECT id, user_name, user_password, user_email, user_info, head_img, create_time
+        FROM user
+        <where>
+            <if test="userName != null and userName != ''">
+                <bind name="userNameLike" value="'%' + userName + '%'"/>
+                AND user_name LIKE #{userNameLike}
+            </if>
+            <if test="userEmail != null and userEmail != ''">
+                AND user_email = #{userEmail}
+            </if>
+        </where>
+    </select>
+
+    <!--
+        set 标签的作用：如果该标签包含的元素中有返回值，就插入一个 set；如果 set 后面的字符串是以逗号结尾的，就将这个逗号删除。
+    -->
+    <update id="updateByIdSelective">
+        UPDATE user
+        <set>
+            <if test="userName != null and userName != ''">
+                user_name = #{userName},
+            </if>
+            <if test="userPassword != null and userPassword != ''">
+                userPassword = #{userPassword},
+            </if>
+            <if test="userEmail != null and userEmail != ''">
+                user_email = #{userEmail},
+            </if>
+            <if test="userInfo != null and userInfo != ''">
+                user_info = #{userInfo},
+            </if>
+            <if test="headImg != null">
+                head_img = #{headImg, jdbcType = BLOB},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime, jdbcType = TIMESTAMP},
+            </if>
+            id = #{id}
+        </set>
+        WHERE id = #{id}
+    </update>
+
+    <select id="selectByIdOrUserName" resultType="org.example.model.User">
+        SELECT id, user_name, user_password, user_email, user_info, head_img, create_time
+        FROM user
+        WHERE 1 = 1
+        <choose>
+            <when test="id != null">
+                AND id = #{id}
+            </when>
+            <when test="userName != null and userName != ''">
+                and user_name = #{userName}
+            </when>
+            <otherwise>
+                AND 1 = 2
+            </otherwise>
+        </choose>
+    </select>
+
+    <!--
+        foreach 包含以下属性：
+        collection，必填，值为要迭代循环的属性名。
+        item，变量名，值为从迭代对象中取出的每一个值。
+        index，索引的属性名，在集合数组情况下值为当前索引值，当迭代循环的对象是 Map 类型时，这个值为 Map 的 key。
+        open，整个循环内容开头的字符串。
+        close，整个循环内容结尾的字符串。
+        separator，每次循环的分隔符。
+    -->
+    <select id="selectByIdList" resultType="org.example.model.User">
+        SELECT id, user_name, user_email, user_info, head_img, create_time
+        FROM user
+        WHERE id IN
+        <foreach collection="list" open="(" close=")" separator="," item="id" index="i">
+            #{id}
+        </foreach>
+    </select>
+
+    <insert id="insertList" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user(user_name, user_password, user_email, user_info, head_img, create_time)
+        VALUES
+        <foreach collection="list" item="user" separator=",">
+            (#{user.userName}, #{user.userPassword}, #{user.userEmail}, #{user.userInfo},
+            #{user.headImg, jdbcType = BLOB}, #{user.createTime, jdbcType = TIMESTAMP})
+        </foreach>
+    </insert>
+
+    <update id="updateByMap">
+        UPDATE user
+        SET
+        <foreach collection="_parameter" item="val" index="key" separator=",">
+            ${key} = #{val}
+        </foreach>
+        WHERE id = #{id}
+    </update>
 </mapper>

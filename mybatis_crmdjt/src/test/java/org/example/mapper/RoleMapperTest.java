@@ -13,9 +13,9 @@ public class RoleMapperTest extends BaseMapperTest {
     public void testSelectById() {
         try (SqlSession session = getSqlSession()) {
             RoleMapper roleMapper = session.getMapper(RoleMapper.class);
-            Role role = roleMapper.selectById(1L);
-            Assertions.assertNotNull(role);
-            Assertions.assertEquals("管理员", role.getRoleName());
+            Role result = roleMapper.selectById(1L);
+            Assertions.assertNotNull(result);
+            Assertions.assertEquals("管理员", result.getRoleName());
         }
     }
 
@@ -23,9 +23,9 @@ public class RoleMapperTest extends BaseMapperTest {
     public void testSelectByIdByResultMap() {
         try (SqlSession session = getSqlSession()) {
             RoleMapper roleMapper = session.getMapper(RoleMapper.class);
-            Role role = roleMapper.selectByIdByResultMap(1L);
-            Assertions.assertNotNull(role);
-            Assertions.assertEquals("管理员", role.getRoleName());
+            Role result = roleMapper.selectByIdByResultMap(1L);
+            Assertions.assertNotNull(result);
+            Assertions.assertEquals("管理员", result.getRoleName());
         }
     }
 
@@ -33,10 +33,10 @@ public class RoleMapperTest extends BaseMapperTest {
     public void testSelectAll() {
         try (SqlSession session = getSqlSession()) {
             RoleMapper roleMapper = session.getMapper(RoleMapper.class);
-            List<Role> roleList = roleMapper.selectAll();
-            Assertions.assertNotNull(roleList);
-            Assertions.assertTrue(roleList.size() > 0);
-            Assertions.assertNotNull(roleList.get(0).getRoleName());
+            List<Role> result = roleMapper.selectAll();
+            Assertions.assertNotNull(result);
+            Assertions.assertTrue(result.size() > 0);
+            Assertions.assertNotNull(result.get(0).getRoleName());
         }
     }
 
@@ -126,8 +126,8 @@ public class RoleMapperTest extends BaseMapperTest {
         SqlSession session = getSqlSession();
         try {
             RoleMapper roleMapper = session.getMapper(RoleMapper.class);
-            Role role = roleMapper.selectById(1L);
-            Assertions.assertNotNull(role);
+            Role result = roleMapper.selectById(1L);
+            Assertions.assertNotNull(result);
             Assertions.assertEquals(1, roleMapper.deleteById(1L));
             Assertions.assertNull(roleMapper.selectById(1L));
         } finally {

@@ -10,8 +10,8 @@ public class CountryMapperTest extends BaseMapperTest {
     @Test
     public void testSelectAll() {
         try (SqlSession session = getSqlSession()) {
-            List<Country> countryList = session.selectList("org.example.mapper.CountryMapper.selectAll");
-            printCountryList(countryList);
+            List<Country> result = session.selectList("org.example.mapper.CountryMapper.selectAll");
+            printCountryList(result);
         }
     }
 
