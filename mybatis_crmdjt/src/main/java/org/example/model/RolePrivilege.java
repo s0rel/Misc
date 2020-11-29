@@ -1,6 +1,6 @@
 package org.example.model;
 
-public class SysRolePrivilege {
+public class RolePrivilege {
     private Long roleId;
     private Long privilegeId;
 

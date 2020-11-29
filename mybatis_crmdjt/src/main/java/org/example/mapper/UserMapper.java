@@ -1,29 +1,37 @@
 package org.example.mapper;
 
 import org.apache.ibatis.annotations.Param;
-import org.example.model.SysRole;
-import org.example.model.SysUser;
+import org.example.model.Role;
+import org.example.model.User;
 
 import java.util.List;
 
 public interface UserMapper {
-    SysUser selectById(Long id);
+    User selectById(Long id);
 
-    List<SysUser> selectAll();
+    List<User> selectAll();
 
-    List<SysRole> selectRolesByUserId(Long userId);
+    List<Role> selectRolesByUserId(Long userId);
 
-    int insert(SysUser user);
+    int insert(User user);
 
-    int insert2(SysUser user); // 使用 JDBC 方式返回主键自增的值
+    /**
+     * 使用 JDBC 方式返回主键自增的值
+     */
+    int insertByUseGeneratedKeys(User user);
 
-    int insert3(SysUser user); // 使用 JDBC 方式返回主键自增的值
+    /**
+     * 使用 selectKey 返回主键的值
+     */
+    int insertBySelectKey(User user);
 
-    int updateById(SysUser user);
+    int updateById(User user);
 
     int deleteById(Long id);
 
-    int deleteById(SysUser user);
+    int deleteById(User user);
 
-    List<SysRole> selectRolesByUserIdAndRoleEnabled(@Param("userId") Long userId, @Param("enabled") Integer enabled); // 传递多个参数
+    // 传递多个参数
+    // 给参数配置 @Param 注解后，MyBatis 会自动将参数封装成 Map 类型，@Param 注解值会作为 Map 中的 key
+    List<Role> selectRolesByUserIdAndRoleEnabled(@Param("userId") Long userId, @Param("enabled") Integer enabled);
 }

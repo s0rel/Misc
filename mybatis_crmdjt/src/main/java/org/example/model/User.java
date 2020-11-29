@@ -3,7 +3,7 @@ package org.example.model;
 import java.util.Arrays;
 import java.util.Date;
 
-public class SysUser {
+public class User {
     private Long id;
     private String userName;
     private String userPassword;

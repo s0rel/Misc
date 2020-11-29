@@ -1,6 +1,6 @@
 package org.example.model;
 
-public class SysPrivilege {
+public class Privilege {
     private Long id;
     private String privilegeName;
     private String privilegeUrl;

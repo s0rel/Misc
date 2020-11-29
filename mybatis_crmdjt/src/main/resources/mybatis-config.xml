@@ -4,7 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <settings>
+        <!-- 使用LOG4J输出日志 -->
         <setting name="logImpl" value="LOG4J"/>
+        <!-- 开启驼峰命名自动映射 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 
@@ -12,6 +14,7 @@
         <package name="org.example.model"/>
     </typeAliases>
 
+    <!-- 配置数据库连接 -->
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
@@ -19,16 +22,16 @@
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
                 <property name="url" value="jdbc:mysql://localhost:3306/mybatis"/>
                 <property name="username" value="root"/>
-                <property name="password" value="123456"/>
+                <property name="password" value="123456##"/>
             </dataSource>
         </environment>
     </environments>
+
+    <!-- SQL语句的映射配置文件 -->
     <mappers>
         <mapper resource="mapper/CountryMapper.xml"/>
         <mapper resource="mapper/UserMapper.xml"/>
         <mapper resource="mapper/RoleMapper.xml"/>
         <mapper resource="mapper/PrivilegeMapper.xml"/>
-        <mapper resource="mapper/UserRoleMapper.xml"/>
-        <mapper resource="mapper/RolePrivilegeMapper.xml"/>
     </mappers>
 </configuration>

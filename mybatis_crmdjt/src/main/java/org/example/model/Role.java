@@ -2,12 +2,13 @@ package org.example.model;
 
 import java.util.Date;
 
-public class SysRole {
+public class Role {
     private Long id;
     private String roleName;
     private Integer enabled;
     private Long createBy;
     private Date createTime;
+    private User user;
 
     public Long getId() {
         return id;
@@ -49,14 +50,23 @@ public class SysRole {
         this.createTime = createTime;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
-        return "SysRole{" +
+        return "Role{" +
                 "id=" + id +
                 ", roleName='" + roleName + '\'' +
                 ", enabled=" + enabled +
                 ", createBy=" + createBy +
                 ", createTime=" + createTime +
+                ", user=" + user +
                 '}';
     }
 }

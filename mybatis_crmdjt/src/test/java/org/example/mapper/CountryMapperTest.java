@@ -2,7 +2,7 @@ package org.example.mapper;
 
 import org.apache.ibatis.session.SqlSession;
 import org.example.model.Country;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
