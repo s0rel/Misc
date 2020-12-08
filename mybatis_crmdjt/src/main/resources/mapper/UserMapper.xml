@@ -37,8 +37,8 @@
     <select id="selectRolesByUserId" resultType="org.example.model.Role">
         SELECT r.id, r.role_name, r.enabled, r.create_by, r.create_time, u.user_name, u.user_email
         FROM user AS u
-        INNER JOIN user_role AS ur ON u.id = ur.user_id
-        INNER JOIN role AS r ON r.id = ur.role_id
+                 INNER JOIN user_role AS ur ON u.id = ur.user_id
+                 INNER JOIN role AS r ON r.id = ur.role_id
         WHERE u.id = #{userId}
     </select>
 
@@ -48,7 +48,8 @@
     -->
     <insert id="insert">
         INSERT INTO user(id, user_name, user_password, user_email, user_info, head_img, create_time)
-        VALUES (#{id}, #{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg, jdbcType = BLOB}, #{createTime, jdbcType = TIMESTAMP})
+        VALUES (#{id}, #{userName}, #{userPassword}, #{userEmail}, #{userInfo}, #{headImg, jdbcType = BLOB},
+                #{createTime, jdbcType = TIMESTAMP})
     </insert>
 
     <!--
@@ -88,21 +89,28 @@
 
     <update id="updateById">
         UPDATE user
-        SET user_name = #{userName}, user_password = #{userPassword}, user_email = #{userEmail}, user_info = #{userInfo}, head_img = #{headImg}, create_time = #{createTime}
+        SET user_name     = #{userName},
+            user_password = #{userPassword},
+            user_email    = #{userEmail},
+            user_info     = #{userInfo},
+            head_img      = #{headImg},
+            create_time   = #{createTime}
         WHERE id = #{id}
     </update>
 
     <delete id="deleteById">
-        DELETE FROM user
+        DELETE
+        FROM user
         WHERE id = #{id}
     </delete>
 
     <select id="selectRolesByUserIdAndRoleEnabled" resultType="org.example.model.Role">
         SELECT r.id, r.role_name, r.enabled, r.create_by, r.create_time
         FROM user AS u
-        INNER JOIN user_role AS ur ON u.id = ur.user_id
-        INNER JOIN role AS r ON r.id = ur.role_id
-        WHERE u.id = #{userId} AND r.enabled = #{enabled}
+                 INNER JOIN user_role AS ur ON u.id = ur.user_id
+                 INNER JOIN role AS r ON r.id = ur.role_id
+        WHERE u.id = #{userId}
+          AND r.enabled = #{enabled}
     </select>
 
     <!--
