@@ -2,6 +2,7 @@ package org.example.model;
 
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public class User {
     private Long id;
@@ -11,6 +12,8 @@ public class User {
     private String userInfo;
     private byte[] headImg;
     private Date createTime;
+    private Role role;
+    private List<Role> roleList;
 
     public Long getId() {
         return id;
@@ -68,9 +71,25 @@ public class User {
         this.createTime = createTime;
     }
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Role> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
+
     @Override
     public String toString() {
-        return "SysUser{" +
+        return "User{" +
                 "id=" + id +
                 ", userName='" + userName + '\'' +
                 ", userPassword='" + userPassword + '\'' +
@@ -78,6 +97,8 @@ public class User {
                 ", userInfo='" + userInfo + '\'' +
                 ", headImg=" + Arrays.toString(headImg) +
                 ", createTime=" + createTime +
+                ", role=" + role +
+                ", roleList=" + roleList +
                 '}';
     }
 }

@@ -23,6 +23,45 @@
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="userRoleMap" extends="userMap" type="org.example.model.User">
+        <result property="role.id" column="role_id"/>
+        <result property="role.roleName" column="role_name"/>
+        <result property="role.enabled" column="enabled"/>
+        <result property="role.createBy" column="create_by"/>
+        <result property="role.createTime" column="role_create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--
+        在 resultMap 中，association 标签用于和一个复杂的类型进行关联，即用于一对一的关联配置。
+        association 标签包含以下属性：
+        property：对应实体类中的属性名，必填。
+        javaType：属性对应的 Java 类型。
+        columnPrefix：查询列的前缀，配置前缀后，在子标签配置 result 的 column 时可以省略前缀。
+        resultMap：可以直接使用现有的 resultMap，而不需要在这里进行配置。
+        fetchType：数据加载方式，可选值为 lazy 和 eager，分别为延迟加载和积极加载，这个配置会覆盖全局的 lazyLoadingEnabled 配置。
+        column：列名，将主查询中的结果作为嵌套查询的参数，配置方式如 column = {prop1 = col1, prop2 = col2}，prop1 和 prop2 将作为嵌套查询的参数。
+        select：另一个映射查询的 id，MyBatis 会额外执行这个查询获取嵌套对象的结果。
+    -->
+    <resultMap id="userRoleMapWithAssociation" extends="userMap" type="org.example.model.User">
+        <association property="role" columnPrefix="role_" resultMap="org.example.mapper.RoleMapper.roleMap"/>
+    </resultMap>
+
+    <resultMap id="userRoleMapSelect" extends="userMap" type="org.example.model.User">
+        <association property="role" fetchType="lazy" column="{id = role_id}"
+                     select="org.example.mapper.RoleMapper.selectRoleById"/>
+    </resultMap>
+
+    <resultMap id="userRoleListMap" extends="userMap" type="org.example.model.User">
+        <collection property="roleList" columnPrefix="role_"
+                    resultMap="org.example.mapper.RoleMapper.rolePrivilegeListMap"/>
+    </resultMap>
+
+    <resultMap id="userRoleListMapSelect" extends="userMap" type="org.example.model.User">
+        <collection property="roleList" fetchType="lazy"
+                    select="org.example.mapper.RoleMapper.selectRoleByUserId"
+                    column="{userId = id}"/>
+    </resultMap>
+
     <select id="selectById" resultMap="userMap">
         SELECT *
         FROM user
@@ -220,4 +259,110 @@
         </foreach>
         WHERE id = #{id}
     </update>
+
+    <select id="selectUserAndRoleById" resultType="org.example.model.User">
+        SELECT u.id,
+               u.user_name     AS userName,
+               u.user_password AS userPassword,
+               u.user_email    AS userEmail,
+               u.user_info     AS userInfo,
+               u.head_img      AS headImg,
+               u.create_time   AS createTime,
+               r.id            AS "role.id",
+               r.role_name     AS "role.roleName",
+               r.enabled       AS "role.enabled",
+               r.create_by     AS "role.createBy",
+               r.create_time   AS "role.createTime"
+        FROM user AS u
+                 INNER JOIN user_role AS ur ON u.id = ur.user_id
+                 INNER JOIN role AS r ON r.id = ur.role_id
+        WHERE u.id = #{id}
+    </select>
+
+    <select id="selectUserAndRoleById2" resultMap="userRoleMap">
+        SELECT u.id,
+               u.user_name,
+               u.user_password,
+               u.user_email,
+               u.user_info,
+               u.head_img,
+               u.create_time,
+               r.id          AS role_id,
+               r.role_name,
+               r.enabled     AS enabled,
+               r.create_by   AS create_by,
+               r.create_time AS role_create_time
+        FROM user AS u
+                 INNER JOIN user_role AS ur ON u.id = ur.user_id
+                 INNER JOIN role AS r ON r.id = ur.role_id
+        WHERE u.id = #{id}
+    </select>
+
+    <select id="selectUserAndRoleById3" resultMap="userRoleMapWithAssociation">
+        SELECT u.id,
+               u.user_name,
+               u.user_password,
+               u.user_email,
+               u.user_info,
+               u.head_img,
+               u.create_time,
+               r.id          AS role_id,
+               r.role_name   AS role_role_name,
+               r.enabled     AS role_enabled,
+               r.create_by   AS role_create_by,
+               r.create_time AS role_create_time
+        FROM user AS u
+                 INNER JOIN user_role AS ur ON u.id = ur.user_id
+                 INNER JOIN role AS r ON r.id = ur.role_id
+        WHERE u.id = #{id}
+    </select>
+
+    <select id="selectUserAndRoleByIdSelect" resultMap="userRoleMapSelect">
+        SELECT u.id,
+               u.user_name,
+               u.user_password,
+               u.user_email,
+               u.user_info,
+               u.head_img,
+               u.create_time,
+               ur.role_id
+        FROM user AS u
+                 INNER JOIN user_role AS ur ON u.id = ur.user_id
+        WHERE u.id = #{id}
+    </select>
+
+    <select id="selectAllUserAndRoles" resultMap="userRoleListMap">
+        SELECT u.id,
+               u.user_name,
+               u.user_password,
+               u.user_email,
+               u.user_info,
+               u.head_img,
+               u.create_time,
+               r.id             AS role_id,
+               r.role_name      AS role_role_name,
+               r.enabled        AS role_enabled,
+               r.create_by      AS role_create_by,
+               r.create_time    AS role_create_time,
+               p.id             AS role_privilege_privilege_id,
+               p.privilege_name AS role_privilege_privilege_name,
+               p.privilege_url  AS role_privilege_privilege_url
+        FROM user AS u
+                 INNER JOIN user_role AS ur ON u.id = ur.user_id
+                 INNER JOIN role AS r ON r.id = ur.role_id
+                 INNER JOIN role_privilege AS rp ON r.id = rp.role_id
+                 INNER JOIN privilege AS p ON p.id = rp.privilege_id
+    </select>
+
+    <select id="selectAllUserAndRolesSelect" resultMap="userRoleListMapSelect">
+        SELECT u.id,
+               u.user_name,
+               u.user_password,
+               u.user_email,
+               u.user_info,
+               u.head_img,
+               u.create_time
+        FROM user AS u
+        WHERE u.id = #{id}
+    </select>
 </mapper>

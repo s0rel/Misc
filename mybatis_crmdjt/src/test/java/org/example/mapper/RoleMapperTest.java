@@ -1,7 +1,9 @@
 package org.example.mapper;
 
 import org.apache.ibatis.session.SqlSession;
+import org.example.model.Privilege;
 import org.example.model.Role;
+import org.example.type.Enabled;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -49,7 +51,7 @@ public class RoleMapperTest extends BaseMapperTest {
             role.setRoleName("test1");
             // 插入当前时间
             role.setCreateTime(new Date());
-            role.setEnabled(1);
+            role.setEnabled(Enabled.enabled);
             role.setCreateBy(1L);
             // 返回值是执行 SQL 影响的行数
             int result = roleMapper.insert(role);
@@ -72,7 +74,7 @@ public class RoleMapperTest extends BaseMapperTest {
             role.setRoleName("test1");
             // 插入当前时间
             role.setCreateTime(new Date());
-            role.setEnabled(1);
+            role.setEnabled(Enabled.enabled);
             role.setCreateBy(1L);
             int result = roleMapper.insertByUseGeneratedKeys(role);
             Assertions.assertEquals(1, result);
@@ -92,7 +94,7 @@ public class RoleMapperTest extends BaseMapperTest {
             role.setRoleName("test1");
             // 插入当前时间
             role.setCreateTime(new Date());
-            role.setEnabled(1);
+            role.setEnabled(Enabled.enabled);
             role.setCreateBy(1L);
             int result = roleMapper.insertBySelectKey(role);
             Assertions.assertEquals(1, result);
@@ -136,4 +138,55 @@ public class RoleMapperTest extends BaseMapperTest {
         }
     }
 
+    @Test
+    public void testSelectAllRoleAndPrivileges() {
+        try (SqlSession session = getSqlSession()) {
+            RoleMapper roleMapper = session.getMapper(RoleMapper.class);
+            List<Role> result = roleMapper.selectAllRoleAndPrivileges();
+            for (Role role : result) {
+                System.out.println("角色名：" + role.getRoleName());
+                for (Privilege privilege : role.getPrivilegeList()) {
+                    System.out.println("权限名：" + privilege.getPrivilegeName());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testSelectRoleByUserIdChoose() {
+        try (SqlSession session = getSqlSession()) {
+            RoleMapper roleMapper = session.getMapper(RoleMapper.class);
+            Role role = roleMapper.selectById(2L);
+            role.setEnabled(Enabled.disabled);
+            roleMapper.updateById(role);
+            List<Role> result = roleMapper.selectRoleByUserIdChoose(1L);
+            for (Role r : result) {
+                System.out.println("角色名：" + r.getRoleName());
+                if (r.getId().equals(1L)) {
+                    Assertions.assertNotNull(r.getPrivilegeList());
+                } else {
+                    Assertions.assertNull(r.getPrivilegeList());
+                    continue;
+                }
+                for (Privilege privilege : r.getPrivilegeList()) {
+                    System.out.println("权限名：" + privilege.getPrivilegeName());
+                }
+            }
+        }
+    }
+
+    @Test
+    public void testUpdateById2() {
+        SqlSession session = getSqlSession();
+        try {
+            RoleMapper roleMapper = session.getMapper(RoleMapper.class);
+            Role result = roleMapper.selectById(2L);
+            Assertions.assertEquals(Enabled.enabled, result.getEnabled());
+            result.setEnabled(Enabled.disabled);
+            roleMapper.updateById(result);
+        } finally {
+            session.rollback();
+            session.close();
+        }
+    }
 }

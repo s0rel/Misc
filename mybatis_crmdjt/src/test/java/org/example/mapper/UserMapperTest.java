@@ -1,6 +1,7 @@
 package org.example.mapper;
 
 import org.apache.ibatis.session.SqlSession;
+import org.example.model.Privilege;
 import org.example.model.Role;
 import org.example.model.User;
 import org.junit.jupiter.api.Assertions;
@@ -274,6 +275,80 @@ public class UserMapperTest extends BaseMapperTest {
         } finally {
             session.rollback();
             session.close();
+        }
+    }
+
+    @Test
+    public void testSelectUserAndRoleById() {
+        try (SqlSession session = getSqlSession()) {
+            UserMapper userMapper = session.getMapper(UserMapper.class);
+            User result = userMapper.selectUserAndRoleById(1001L);
+            Assertions.assertNotNull(result);
+            Assertions.assertNotNull(result.getRole());
+        }
+    }
+
+    @Test
+    public void testSelectUserAndRoleById2() {
+        try (SqlSession session = getSqlSession()) {
+            UserMapper userMapper = session.getMapper(UserMapper.class);
+            User result = userMapper.selectUserAndRoleById2(1001L);
+            Assertions.assertNotNull(result);
+            Assertions.assertNotNull(result.getRole());
+        }
+    }
+
+    @Test
+    public void testSelectUserAndRoleById3() {
+        try (SqlSession session = getSqlSession()) {
+            UserMapper userMapper = session.getMapper(UserMapper.class);
+            User result = userMapper.selectUserAndRoleById3(1001L);
+            Assertions.assertNotNull(result);
+            Assertions.assertNotNull(result.getRole());
+        }
+    }
+
+    @Test
+    public void testSelectUserAndRoleByIdSelect() {
+        try (SqlSession session = getSqlSession()) {
+            UserMapper userMapper = session.getMapper(UserMapper.class);
+            User result = userMapper.selectUserAndRoleByIdSelect(1001L);
+            Assertions.assertNotNull(result);
+            System.out.println("调用 result.getRole()");
+            Assertions.assertNotNull(result.getRole());
+        }
+    }
+
+    @Test
+    public void testSelectAllUserAndRoles() {
+        try (SqlSession session = getSqlSession()) {
+            UserMapper userMapper = session.getMapper(UserMapper.class);
+            List<User> result = userMapper.selectAllUserAndRoles();
+            for (User user : result) {
+                System.out.println("用户名：" + user.getUserName());
+                for (Role role : user.getRoleList()) {
+                    System.out.println("角色名：" + role.getRoleName());
+                    for (Privilege privilege : role.getPrivilegeList()) {
+                        System.out.println("权限名：" + privilege.getPrivilegeName());
+                    }
+                }
+            }
+        }
+    }
+
+
+    @Test
+    public void testSelectAllUserAndRolesSelect() {
+        try (SqlSession session = getSqlSession()) {
+            UserMapper userMapper = session.getMapper(UserMapper.class);
+            User result = userMapper.selectAllUserAndRolesSelect(1L);
+            System.out.println("用户名：" + result.getUserName());
+            for (Role role : result.getRoleList()) {
+                System.out.println("角色名：" + role.getRoleName());
+                for (Privilege privilege : role.getPrivilegeList()) {
+                    System.out.println("权限名：" + privilege.getPrivilegeName());
+                }
+            }
         }
     }
 }

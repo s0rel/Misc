@@ -7,4 +7,11 @@
         <result property="privilegeName" column="privilege_name"/>
         <result property="privilegeUrl" column="privilege_url"/>
     </resultMap>
+
+    <select id="selectPrivilegeByRoleId" resultMap="privilegeMap">
+        SELECT p.*
+        FROM privilege AS p
+                 INNER JOIN role_privilege AS rp ON p.id = rp.privilege_id
+        WHERE role_id = #{roleId}
+    </select>
 </mapper>

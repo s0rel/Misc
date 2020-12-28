@@ -7,4 +7,6 @@ import org.example.provider.PrivilegeProvider;
 public interface PrivilegeMapper {
     @SelectProvider(type = PrivilegeProvider.class, method = "selectById")
     Privilege selectById(Long id);
+
+    Privilege selectPrivilegeByRoleId(Long id);
 }

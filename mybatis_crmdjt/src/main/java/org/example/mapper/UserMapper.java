@@ -49,4 +49,28 @@ public interface UserMapper {
     int insertList(List<User> userList);
 
     int updateByMap(Map<String, Object> map);
+
+    /**
+     * 使用 MyBatis 的一对一映射处理一对一关系
+     */
+    User selectUserAndRoleById(Long id);
+
+    /**
+     * 使用 resultMap 处理一对一映射关系
+     */
+    User selectUserAndRoleById2(Long id);
+
+    /**
+     * 使用 resultMap 的 association 标签处理一对一映射关系
+     */
+    User selectUserAndRoleById3(Long id);
+
+    /**
+     * 使用 resultMap 的 association 标签实现嵌套查询
+     */
+    User selectUserAndRoleByIdSelect(Long id);
+
+    List<User> selectAllUserAndRoles();
+
+    User selectAllUserAndRolesSelect(Long id);
 }

@@ -8,11 +8,17 @@
         <setting name="logImpl" value="LOG4J"/>
         <!-- 开启驼峰命名自动映射 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
+        <!-- 其他配置 -->
+        <setting name="aggressiveLazyLoading" value="false"/>
     </settings>
 
     <typeAliases>
         <package name="org.example.model"/>
     </typeAliases>
+
+    <typeHandlers>
+        <typeHandler javaType="org.example.type.Enabled" handler="org.example.type.EnabledTypeHandler"/>
+    </typeHandlers>
 
     <!-- 配置数据库连接 -->
     <environments default="development">

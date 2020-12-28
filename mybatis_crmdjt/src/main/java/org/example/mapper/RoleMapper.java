@@ -55,4 +55,10 @@ public interface RoleMapper {
 
     @Delete("DELETE FROM role WHERE id = #{id}")
     int deleteById(Long id);
+
+    List<Role> selectAllRoleAndPrivileges();
+
+    Role selectRoleByUserId(Long userId);
+
+    List<Role> selectRoleByUserIdChoose(Long userId);
 }

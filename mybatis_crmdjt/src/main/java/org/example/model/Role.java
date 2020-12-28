@@ -1,14 +1,18 @@
 package org.example.model;
 
+import org.example.type.Enabled;
+
 import java.util.Date;
+import java.util.List;
 
 public class Role {
     private Long id;
     private String roleName;
-    private Integer enabled;
+    private Enabled enabled;
     private Long createBy;
     private Date createTime;
     private User user;
+    List<Privilege> privilegeList;
 
     public Long getId() {
         return id;
@@ -26,11 +30,11 @@ public class Role {
         this.roleName = roleName;
     }
 
-    public Integer getEnabled() {
+    public Enabled getEnabled() {
         return enabled;
     }
 
-    public void setEnabled(Integer enabled) {
+    public void setEnabled(Enabled enabled) {
         this.enabled = enabled;
     }
 
@@ -58,6 +62,14 @@ public class Role {
         this.user = user;
     }
 
+    public List<Privilege> getPrivilegeList() {
+        return privilegeList;
+    }
+
+    public void setPrivilegeList(List<Privilege> privilegeList) {
+        this.privilegeList = privilegeList;
+    }
+
     @Override
     public String toString() {
         return "Role{" +
@@ -67,6 +79,7 @@ public class Role {
                 ", createBy=" + createBy +
                 ", createTime=" + createTime +
                 ", user=" + user +
+                ", privilegeList=" + privilegeList +
                 '}';
     }
 }
