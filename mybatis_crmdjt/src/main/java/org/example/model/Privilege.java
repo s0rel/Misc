@@ -1,6 +1,10 @@
 package org.example.model;
 
-public class Privilege {
+import java.io.Serializable;
+
+public class Privilege implements Serializable {
+    private static final long serialVersionUID = 6320941908222932113L;
+
     private Long id;
     private String privilegeName;
     private String privilegeUrl;
