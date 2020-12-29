@@ -2,10 +2,13 @@ package org.example.model;
 
 import org.example.type.Enabled;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class Role {
+public class Role implements Serializable {
+    private static final long serialVersionUID = 6320941908222932112L;
+
     private Long id;
     private String roleName;
     private Enabled enabled;

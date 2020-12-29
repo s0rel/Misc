@@ -2,6 +2,27 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.example.mapper.RoleMapper">
+    <!--
+        MyBatis 的二级缓存存在于 SqlSessionFactory 的生命周期中，当存在多个 SqlSessionFactory 时，
+        它们的缓存都是绑定在各自的对象上，缓存数据一般情况下是不相通的。只有在使用如 Redis 这样的缓存时，
+        才可以共享缓存。
+        MyBatis 的二级缓存是和命名空间绑定的，即二级缓存需要配置在 Mapper.xml 映射文件中，或者配置在
+        Mapper.java 接口中。在映射文件中，命名空间就是 XML 根节点 mapper 的 namespace 属性。在 Mapper
+        接口中，命名空间就是接口的全限定名称。
+        cache 标签可以配置的属性如下：
+        eviction（收回策略）：
+            LRU（最近最少使用的）：移除最长时间不使用的对象，这是默认值。
+            FIFO（先进先出）：按对象进入缓存的顺序来移除它们。
+            SOFT（软引用）：移除基于垃圾收集器状态和软引用规则的对象。
+            WEAK（弱引用）：更积极地移除基于垃圾收集器状态和弱引用规则的对象。
+        flushInterval（刷新间隔）：可被设为任意正整数，而且它们代表一个合理的毫秒形式的时间段。默认情况不设置，即
+        没有刷新间隔，缓存仅仅在调用语句时刷新。
+        size（引用数目）：可被设为任意正整数，默认值是 1024.
+        readOnly（只读）：属性可被设置为 true 或 false。只读的缓存会给所有调用者返回缓存对象的相同实例，因为这些对象
+        不能被修改，这提供了重要的性能优势。可读写的缓存会通过序列化方式返回缓存对象的拷贝，这种方式虽慢但安全，因为默认
+        是 false。s使用可读写缓存时对应的类必须实现 Serializable 接口。
+    -->
+    <cache eviction="FIFO" flushInterval="60000" size="512" readOnly="false"/>
 
     <resultMap id="roleMap" type="org.example.model.Role">
         <result property="id" column="id"/>

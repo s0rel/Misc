@@ -1,5 +1,6 @@
 package org.example.mapper;
 
+import org.apache.ibatis.annotations.CacheNamespaceRef;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Options;
@@ -13,6 +14,7 @@ import org.example.model.Role;
 
 import java.util.List;
 
+@CacheNamespaceRef(RoleMapper.class)
 public interface RoleMapper {
     @Select("SELECT id, role_name, enabled, create_by, create_time FROM role WHERE id = #{id}")
     Role selectById(Long id);

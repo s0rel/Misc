@@ -8,8 +8,10 @@
         <setting name="logImpl" value="LOG4J"/>
         <!-- 开启驼峰命名自动映射 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
-        <!-- 其他配置 -->
+        <!-- 启用延迟加载 -->
         <setting name="aggressiveLazyLoading" value="false"/>
+        <!-- 开启二级缓存，默认打开 -->
+        <setting name="cacheEnabled" value="true"/>
     </settings>
 
     <typeAliases>
