@@ -1,0 +1,71 @@
+# 第 3 章 Lambda 表达式
+
+## 3.1 Lambda 管中窥豹
+
+Lambda 表达式由三部分组成，参数列表、箭头和 Lambda 主体。如果 Lambda 主体为控制流语句，必须需要使用花括号，但不需要使用括号环绕返回值为空的单行方法调用；如果 Lambda 主体为表达式，可以使用花括号也可以不使用。
+
+```
+(Integer i) -> { return "Alan" + i; }
+(String s) -> "Iron Man"
+(String s) -> { return "Iron Man"; }
+```
+
+## 3.2 在哪里以及如何使用 Lambda
+
+函数式接口就是只定义一个抽象方法的接口，即便一个接口有很多默认方法，只要接口只定义了一个抽象方法，它就仍然是一个函数式接口。
+
+## 3.4 使用函数式接口
+
+### 3.4.1 Predicate
+
+java.util.function.Predicate<T> 接口定义了一个名叫 test 的抽象方法，它接受泛型 T 对象，并返回一个 boolean。
+
+### 3.4.2 Consumer
+
+java.util.function.Consumer<T> 接口定义了一个名叫 accept 的抽象方法，它接受泛型 T 对象，没有返回（void）。
+
+### 3.4.3 Function
+
+java.util.function.Function<T, R> 接口定义了一个名叫 apply 的抽象方法，它接受泛型 T 对象，并返回一个泛型 R 对象。
+
+表 3-2 Java 8 中的常用函数式接口
+
+|   函数式接口             |    Predicate<T>   |
+|:-------------------:|:-----------------:|
+|    Predicate<T>     |   T -> boolean    |
+|     Consumer<T>     |     T -> void     |
+|   Function<T, R>    |      T -> R       |
+|     Supplier<T>     |      () -> T      |
+|  UnaryOperator<T>   |      T -> T       |
+|  BinaryOperator<T>  |    (T, T) -> T    |
+|  BiPredicate<T, U>  | (T, U) -> boolean |
+|  BiConsumer<T, U>   |  (T, U) -> void   |
+| BiFunction<T, U, R> |    (T, U) -> R    |
+
+## 3.5 类型检查、类型推断以及限制
+
+### 3.5.4 使用局部变量
+
+Lambda 可以没有限制地捕获实例变量和静态变量。但局部变量必须显式声明为 final 或事实上是 final。换句话说，Lambda 表达式只能捕获指派给它们的局部变量一次。（注：捕获实例变量可以被看作捕获局部变量 this。）
+
+局部变量的使用限制有两个原因：
+
+* 实例变量和局部变量背后的实现有一个关键不同，实例变量都存储在堆中，局部变量泽保存在栈上。如果 Lambda 可以直接访问局部变量，而且 Lambda 是在一个线程中使用的，则使用 Lambda
+  的线程，可能会在分配该变量的线程将这个变量收回之后，去访问该变量。因此，Java 在访问自由局部变量时，实际上是在访问它的副本。
+* 这一限制不鼓励使用改变外部变量的典型命令式编程模式，这种模式会阻碍很容易做到的并行处理。
+
+## 3.8 复合 Lambda 表达式的有用方法
+
+### 3.8.2 谓词复合
+
+谓词接口包括三个方法：negate、and 和 or。请注意，and 和 or 方法是按照在表达式链中的位置，从左到右确定优先级的。因此，a.or(b).and(c) 可以看作 (a || b) && c。同样，a.and(b).or(c)
+可以看作 (a && b) || c。
+
+### 3.8.3 函数复合
+
+可以把 Function 接口所代表的 Lambda 表达式复合起来，Function 接口为此提供了 andThen 和 compose 两个默认方法，它们都会返回 Function 的一个实例。
+
+andThen 方法会返回一个函数，它先对输入应用一个给定函数，再对输出应用另一个函数。比如，假设有一个函数 f 给数字加 1 (x -> x + 1)，另一个函数 g 给数字乘 2，f.andThen(g) 相当于组合函数 g(f(x))
+。
+
+compose 方法先把给定的函数用作 compose 的参数里面给的那个函数，然后再把函数本身用于结果。f.compose(g) 相当于组合函数 f(g(x))。
