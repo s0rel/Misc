@@ -1,4 +1,4 @@
-package org.example.abstractfactory.factory;
+package org.example.abstractfactory.abstractfactory.factory;
 
 import java.util.ArrayList;
 import java.util.List;

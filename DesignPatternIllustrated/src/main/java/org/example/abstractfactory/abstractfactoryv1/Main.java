@@ -1,14 +1,14 @@
-package org.example.abstractfactory;
+package org.example.abstractfactory.abstractfactoryv1;
 
-import org.example.abstractfactory.factory.Factory;
-import org.example.abstractfactory.factory.Link;
-import org.example.abstractfactory.factory.Page;
-import org.example.abstractfactory.factory.Tray;
-import org.example.abstractfactory.tablefactory.TableFactory;
+import org.example.abstractfactory.abstractfactoryv1.factory.Factory;
+import org.example.abstractfactory.abstractfactoryv1.factory.Link;
+import org.example.abstractfactory.abstractfactoryv1.factory.Page;
+import org.example.abstractfactory.abstractfactoryv1.factory.Tray;
+import org.example.abstractfactory.abstractfactoryv1.listfactory.ListFactory;
 
 public class Main {
     public static void main(String[] args) {
-        Factory factory = Factory.getFactory(TableFactory.class);
+        Factory factory = Factory.getFactory(ListFactory.class);
 
         Link people = factory.createLink("人民日报", "http://www.people.com.cn/");
         Link gmw = factory.createLink("光明日报", "http://www.gmw.cn/");

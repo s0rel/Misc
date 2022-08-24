@@ -1,4 +1,4 @@
-package org.example.abstractfactory.factory;
+package org.example.abstractfactory.abstractfactoryv1.factory;
 
 public abstract class Factory {
     public static Factory getFactory(Class clazz) {

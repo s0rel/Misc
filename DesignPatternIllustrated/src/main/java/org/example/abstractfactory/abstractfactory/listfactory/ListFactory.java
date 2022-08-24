@@ -1,9 +1,9 @@
-package org.example.abstractfactory.listfactory;
+package org.example.abstractfactory.abstractfactory.listfactory;
 
-import org.example.abstractfactory.factory.Factory;
-import org.example.abstractfactory.factory.Link;
-import org.example.abstractfactory.factory.Page;
-import org.example.abstractfactory.factory.Tray;
+import org.example.abstractfactory.abstractfactory.factory.Factory;
+import org.example.abstractfactory.abstractfactory.factory.Link;
+import org.example.abstractfactory.abstractfactory.factory.Page;
+import org.example.abstractfactory.abstractfactory.factory.Tray;
 
 public class ListFactory extends Factory {
     @Override

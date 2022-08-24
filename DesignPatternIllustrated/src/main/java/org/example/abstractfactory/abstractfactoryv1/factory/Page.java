@@ -1,4 +1,4 @@
-package org.example.abstractfactory.factory;
+package org.example.abstractfactory.abstractfactoryv1.factory;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class Page {
+public abstract class Page implements HTMLable {
     protected String title;
 
     protected String author;
@@ -33,6 +33,4 @@ public abstract class Page {
             e.printStackTrace();
         }
     }
-
-    public abstract String makeHTML();
 }

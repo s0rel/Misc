@@ -1,6 +1,6 @@
-package org.example.abstractfactory.listfactory;
+package org.example.abstractfactory.abstractfactoryv1.listfactory;
 
-import org.example.abstractfactory.factory.Link;
+import org.example.abstractfactory.abstractfactoryv1.factory.Link;
 
 public class ListLink extends Link {
     public ListLink(String caption, String url) {

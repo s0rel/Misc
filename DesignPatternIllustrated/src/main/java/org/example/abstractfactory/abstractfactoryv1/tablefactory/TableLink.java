@@ -1,6 +1,6 @@
-package org.example.abstractfactory.tablefactory;
+package org.example.abstractfactory.abstractfactoryv1.tablefactory;
 
-import org.example.abstractfactory.factory.Link;
+import org.example.abstractfactory.abstractfactoryv1.factory.Link;
 
 public class TableLink extends Link {
     public TableLink(String caption, String url) {

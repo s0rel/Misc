@@ -1,9 +1,9 @@
-package org.example.abstractfactory.tablefactory;
+package org.example.abstractfactory.abstractfactoryv1.tablefactory;
 
-import org.example.abstractfactory.factory.Factory;
-import org.example.abstractfactory.factory.Link;
-import org.example.abstractfactory.factory.Page;
-import org.example.abstractfactory.factory.Tray;
+import org.example.abstractfactory.abstractfactoryv1.factory.Factory;
+import org.example.abstractfactory.abstractfactoryv1.factory.Link;
+import org.example.abstractfactory.abstractfactoryv1.factory.Page;
+import org.example.abstractfactory.abstractfactoryv1.factory.Tray;
 
 public class TableFactory extends Factory {
     public Link createLink(String caption, String url) {

@@ -1,12 +1,12 @@
-package org.example.abstractfactory.listfactory;
+package org.example.abstractfactory.abstractfactoryv1.tablefactory;
 
-import org.example.abstractfactory.factory.Item;
-import org.example.abstractfactory.factory.Page;
+import org.example.abstractfactory.abstractfactoryv1.factory.Item;
+import org.example.abstractfactory.abstractfactoryv1.factory.Page;
 
 import java.util.Iterator;
 
-public class ListPage extends Page {
-    public ListPage(String title, String author) {
+public class TablePage extends Page {
+    public TablePage(String title, String author) {
         super(title, author);
     }
 
@@ -17,13 +17,13 @@ public class ListPage extends Page {
         buffer.append("<html><head><title>" + title + "</title></head>\n");
         buffer.append("<body>\n");
         buffer.append("<h1>" + title + "</h1>\n");
-        buffer.append("<ul>\n");
+        buffer.append("<table width=\"80%\" border=\"3\">\n");
         Iterator it = content.iterator();
         while (it.hasNext()) {
             Item item = (Item) it.next();
-            buffer.append(item.makeHTML());
+            buffer.append("<tr>" + item.makeHTML() + "</tr>");
         }
-        buffer.append("</ul>\n");
+        buffer.append("</table>\n");
         buffer.append("<hr><address>" + author + "</address>");
         buffer.append("</body></html>\n");
         return buffer.toString();

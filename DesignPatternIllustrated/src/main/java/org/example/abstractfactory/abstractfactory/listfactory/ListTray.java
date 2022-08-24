@@ -1,7 +1,7 @@
-package org.example.abstractfactory.listfactory;
+package org.example.abstractfactory.abstractfactory.listfactory;
 
-import org.example.abstractfactory.factory.Item;
-import org.example.abstractfactory.factory.Tray;
+import org.example.abstractfactory.abstractfactory.factory.Item;
+import org.example.abstractfactory.abstractfactory.factory.Tray;
 
 import java.util.Iterator;
 
