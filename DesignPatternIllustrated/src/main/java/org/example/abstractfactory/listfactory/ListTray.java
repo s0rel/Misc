@@ -12,17 +12,17 @@ public class ListTray extends Tray {
 
     @Override
     public String makeHTML() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<li>\n");
-        buffer.append(caption + "\n");
-        buffer.append("<ul>\n");
+        StringBuilder sb = new StringBuilder();
+        sb.append("<li>\n");
+        sb.append(caption + "\n");
+        sb.append("<ul>\n");
         Iterator it = super.getTray().iterator();
         while (it.hasNext()) {
             Item item = (Item) it.next();
-            buffer.append(item.makeHTML());
+            sb.append(item.makeHTML());
         }
-        buffer.append("</ul>\n");
-        buffer.append("</li>\n");
-        return buffer.toString();
+        sb.append("</ul>\n");
+        sb.append("</li>\n");
+        return sb.toString();
     }
 }

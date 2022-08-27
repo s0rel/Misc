@@ -12,20 +12,20 @@ public class TablePage extends Page {
 
     @Override
     public String makeHTML() {
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/>");
-        buffer.append("<html><head><title>" + title + "</title></head>\n");
-        buffer.append("<body>\n");
-        buffer.append("<h1>" + title + "</h1>\n");
-        buffer.append("<table width=\"80%\" border=\"3\">\n");
+        StringBuilder sb = new StringBuilder();
+        sb.append("<meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\"/>");
+        sb.append("<html><head><title>" + title + "</title></head>\n");
+        sb.append("<body>\n");
+        sb.append("<h1>" + title + "</h1>\n");
+        sb.append("<table width=\"80%\" border=\"3\">\n");
         Iterator it = content.iterator();
         while (it.hasNext()) {
             Item item = (Item) it.next();
-            buffer.append("<tr>" + item.makeHTML() + "</tr>");
+            sb.append("<tr>" + item.makeHTML() + "</tr>");
         }
-        buffer.append("</table>\n");
-        buffer.append("<hr><address>" + author + "</address>");
-        buffer.append("</body></html>\n");
-        return buffer.toString();
+        sb.append("</table>\n");
+        sb.append("<hr><address>" + author + "</address>");
+        sb.append("</body></html>\n");
+        return sb.toString();
     }
 }
