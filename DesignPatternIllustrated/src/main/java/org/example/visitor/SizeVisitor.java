@@ -18,7 +18,7 @@ public class SizeVisitor extends Visitor {
     public void visit(Directory directory) {
         Iterator it = directory.iterator();
         while (it.hasNext()) {
-            Entry entry = (Entry)it.next();
+            Entry entry = (Entry) it.next();
             entry.accept(this);
         }
     }

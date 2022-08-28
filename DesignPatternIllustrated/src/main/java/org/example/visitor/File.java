@@ -1,6 +1,6 @@
 package org.example.visitor;
 
-public class File extends Entry{
+public class File extends Entry {
     private String name;
 
     private int size;

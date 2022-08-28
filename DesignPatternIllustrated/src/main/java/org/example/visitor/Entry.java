@@ -1,8 +1,6 @@
 package org.example.visitor;
 
-import java.util.Iterator;
-
-public abstract class Entry implements Element{
+public abstract class Entry implements Element {
     public abstract String getName();
 
     public abstract int getSize();
@@ -12,6 +10,6 @@ public abstract class Entry implements Element{
     }
 
     public String toString() {
-        return getName() + "(" +getSize() + ")";
+        return getName() + "(" + getSize() + ")";
     }
 }

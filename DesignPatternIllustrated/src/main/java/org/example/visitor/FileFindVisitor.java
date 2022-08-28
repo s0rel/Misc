@@ -9,7 +9,7 @@ public class FileFindVisitor extends Visitor {
 
     private List<Entry> found = new ArrayList<>();
 
-    public FileFindVisitor(String filetype) {           
+    public FileFindVisitor(String filetype) {
         this.fileType = filetype;
     }
 
@@ -18,17 +18,17 @@ public class FileFindVisitor extends Visitor {
     }
 
     @Override
-    public void visit(File file) {                  
+    public void visit(File file) {
         if (file.getName().endsWith(fileType)) {
             found.add(file);
         }
     }
 
     @Override
-    public void visit(Directory directory) {   
+    public void visit(Directory directory) {
         Iterator it = directory.iterator();
         while (it.hasNext()) {
-            Entry entry = (Entry)it.next();
+            Entry entry = (Entry) it.next();
             entry.accept(this);
         }
     }

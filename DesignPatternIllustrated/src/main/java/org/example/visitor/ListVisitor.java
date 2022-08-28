@@ -2,7 +2,7 @@ package org.example.visitor;
 
 import java.util.Iterator;
 
-public class ListVisitor extends Visitor{
+public class ListVisitor extends Visitor {
     private String currentDir = "";
 
 
@@ -14,7 +14,7 @@ public class ListVisitor extends Visitor{
     @Override
     public void visit(Directory directory) {
         System.out.println(currentDir + "/" + directory.getName());
-        String saveDir =currentDir;
+        String saveDir = currentDir;
         currentDir = currentDir + "/" + directory.getName();
         Iterator iterator = directory.iterator();
         while (iterator.hasNext()) {
